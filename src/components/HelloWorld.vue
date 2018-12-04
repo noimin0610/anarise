@@ -11,15 +11,20 @@
           font-size: 20px;
         }
       </svg:style>
-      <rect x="0" y="0" width="200" height="400"  fill="lightskyblue" class="category" />
+      <svg:defs>
+        <g id="category-area">
+          <rect x="inherit" y="0" width="200" height="400"  fill="inherit" class="category" />
+        </g>
+      </svg:defs>
+      <use x="0" fill="lightskyblue" href="#category-area" />
       <text x="100" y="20" class="category-title">エピソード・経験</text>
 
-      <rect x="200" y="0" width="200" height="400" fill="lemonchiffon" />
+      <use x="200" fill="lemonchiffon" href="#category-area" />
       <text x="300" y="20" class="category-title">性質・スキル・能力</text>
-      <rect x="250" y="50" width="100" height="50" rx="10" ry="10" fill="gold" />
+      <use x="250" y="50" width="100" height="50" rx="10" ry="10" fill="gold" />
       <text x="300" y="80" text-anchor="middle">可愛がり</text>
 
-      <rect x="400" y="0" width="200" height="400" fill="pink" />
+      <use x="400" fill="pink" href="#category-area" />
       <text x="500" y="20" class="category-title">志望先に求めるもの</text>
     </svg>
   </div>
