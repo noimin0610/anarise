@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <h1>Anarise</h1>
     <router-view/>
   </div>
 </template>
@@ -17,7 +17,10 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #333;
   margin-top: 60px;
+}
+h1 {
+  font-size: 48px;
 }
 </style>
