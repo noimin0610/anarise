@@ -5,8 +5,13 @@
         text-anchor: middle;
         font-size: 12px;
       }
+      text.delete-button {
+        font-weight: bold;
+        cursor: pointer;
+      }
     </svg:style>
-    <rect :x="this.x" :y="this.y" width="140" height="48" rx="10" ry="10" :fill="this.fill" class="card-background" v-on:click="click" />
+    <rect :x="this.x" :y="this.y" width="140" height="48" rx="10" ry="15" :fill="this.fill" class="card-background" v-on:click="click" />
+    <text :x="Number(this.x) + 5" :y="Number(this.y) + 12" class="delete-button" v-if="isSelected">×</text>
     <text :x="this.textX" :y="this.textY" class="card-text">{{ this.text.substr(0, 10) }}</text>
     <text v-if="this.isLongText" :x="this.textX" :y="Number(this.textY) + 20" class="card-text"> {{ this.text.substr(10, 10) }}</text>
   </svg>
@@ -14,6 +19,11 @@
 <script>
 export default {
   name: 'Card',
+  data () {
+    return {
+      isSelected: false
+    }
+  },
   props: ['x', 'y', 'fill', 'text'],
   computed: {
     isLongText () {
@@ -42,14 +52,19 @@ export default {
       }
       if (target.classList.contains('selected')) {
         target.classList.remove('selected')
+        this.isSelected = false
         this.$parent.unselect(target, newItem)
       } else {
         target.classList.add('selected')
+        this.isSelected = true
         this.$parent.select(target, newItem)
       }
     }
   }
 }
 </script>
-<style>
+<style scoped>
+.card {
+  cursor: pointer;
+}
 </style>

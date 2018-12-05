@@ -17,6 +17,12 @@
           stroke: #333;
           stroke-width: 3;
         }
+        text.add-button {
+          fill: white;
+          font-weight: bold;
+          text-anchor: middle;
+          cursor: pointer;
+        }
       </svg:style>
 
       <svg:defs>
@@ -25,9 +31,7 @@
         </g>
         <g id="add-button">
           <circle cy="35" r="10" fill="inherit" />
-          <text y="40" text-anchor="middle">
-            <tspan font-weight="bold" fill="white">+</tspan>
-          </text>
+          <text y="40" class="add-button">+</text>
         </g>
       </svg:defs>
 
