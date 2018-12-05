@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <svg viewBox="0 0 600 400">
+    <svg id="content" viewBox="0 0 600 400">
       <svg:style type="text/css">
         text {
           fill: #333;
@@ -34,20 +34,23 @@
       <use x="0" fill="aquamarine" href="#category-area" />
       <text x="100" y="20" class="category-title">エピソード・経験</text>
       <use cx="100" x="100" fill="mediumseagreen" href="#add-button" v-on:click="addCard" />
-      <Card x="30" y="50" fill="mediumseagreen" text="＊＊ちゃんとの交際＊＊＊ちゃんとの交際＊" />
+      <svg v-for="card in cards[0]" :key="card.id">
+        <Card :x="card.x" :y="card.y" :fill="card.fill" :text="card.text" />
+      </svg>
 
       <use x="200" fill="lightskyblue" href="#category-area" />
       <text x="300" y="20" class="category-title">性格・スキル・能力</text>
       <use cx="300" x="300" fill="cornflowerblue" href="#add-button" v-on:click="addCard" />
-      <Card x="230" y="50" fill="cornflowerblue" text="ショタコン" />
-      <rect x="230" y="100" width="140" height="48" rx="10" ry="10" fill="cornflowerblue" class="card" v-on:click="select" />
-      <text x="300" y="130" class="card-text">積極的</text>
+      <svg v-for="card in cards[1]" :key="card.id">
+        <Card :x="card.x" :y="card.y" :fill="card.fill" :text="card.text" />
+      </svg>
 
       <use x="400" fill="pink" href="#category-area" />
       <text x="500" y="20" class="category-title">志望先の特徴</text>
       <use cx="500" x="500" fill="hotpink" href="#add-button" v-on:click="addCard" />
-      <rect x="430" y="50" width="140" height="48" rx="10" ry="10" fill="hotpink" class="card" v-on:click="select" />
-      <text x="500" y="80" class="card-text">可愛い</text>
+      <svg v-for="card in cards[2]" :key="card.id">
+        <Card :x="card.x" :y="card.y" :fill="card.fill" :text="card.text" />
+      </svg>
     </svg>
   </div>
 </template>
@@ -58,7 +61,35 @@ export default {
   name: 'Main',
   data () {
     return {
-      cardCount: [1, 2, 1],
+      cards: [
+        [
+          {
+            x: 30,
+            y: 50,
+            fill: 'mediumseagreen',
+            text: '＊＊ちゃんとの交際＊＊＊ちゃんとの交際＊'
+          }
+        ], [
+          {
+            x: 230,
+            y: 50,
+            fill: 'cornflowerblue',
+            text: 'ショタコン'
+          }, {
+            x: 230,
+            y: 100,
+            fill: 'cornflowerblue',
+            text: '積極的'
+          }
+        ], [
+          {
+            x: 430,
+            y: 50,
+            fill: 'hotpink',
+            text: '可愛い'
+          }
+        ]
+      ],
       cardLimit: 7,
       selectCount: 0,
       selectItems: [],
@@ -70,30 +101,18 @@ export default {
     Card
   },
   methods: {
-    select: function (e) {
-      const target = e.currentTarget
-      const newItem = {
-        element: target,
-        x: target.x.baseVal.value,
-        y: target.y.baseVal.value,
-        width: target.width.baseVal.value,
-        height: target.height.baseVal.value
-      }
-
-      if (target.classList.contains('selected')) {
-        target.classList.remove('selected')
-        this.selectCount -= 1
-        this.selectItems.splice(
-          this.selectItems.indexOf(newItem), 1
-        )
-      } else {
-        target.classList.add('selected')
-        this.selectCount += 1
-        this.selectItems.push(newItem)
-        if (this.selectCount === 2) {
-          this.writeLine()
-          this.runTimer()
-        }
+    unselect: function (target, newItem) {
+      this.selectCount -= 1
+      this.selectItems.splice(
+        this.selectItems.indexOf(newItem), 1
+      )
+    },
+    select: function (target, newItem) {
+      this.selectCount += 1
+      this.selectItems.push(newItem)
+      if (this.selectCount === 2) {
+        this.writeLine()
+        this.runTimer()
       }
     },
     writeLine: function () {
@@ -112,7 +131,6 @@ export default {
       line.setAttribute('y2', (this.selectItems[1].y + this.selectItems[1].height / 2))
       line.addEventListener('click', this.removeLine)
       document.getElementsByTagName('svg')[0].appendChild(line)
-
       this.edges.push(line)
     },
     clearSelect: function () {
@@ -129,7 +147,6 @@ export default {
       const target = e.currentTarget
       const newEdges = this.edges.filter(e => e !== target)
       this.edges = newEdges
-      console.log(this.edges)
       target.parentNode.removeChild(target)
     },
     addCard: function (e) {
@@ -140,25 +157,17 @@ export default {
         return
       }
       const categoryIdx = Math.floor(target.x.baseVal.value / 200)
-      this.cardCount[categoryIdx]++
-      const cardIdx = this.cardCount[categoryIdx]
-
+      const cardIdx = this.cards[categoryIdx].length
       if (cardIdx >= this.cardLimit) {
         target.parentNode.removeChild(target)
       }
-
-      let card = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-      card.setAttribute('x', 200 * categoryIdx + 30)
-      card.setAttribute('y', 50 * cardIdx)
-      card.setAttribute('width', 140)
-      card.setAttribute('height', 48)
-      card.setAttribute('rx', 10)
-      card.setAttribute('ry', 10)
-      card.setAttribute('fill', (categoryIdx === 0 ? 'mediumseagreen' : (categoryIdx === 1 ? 'cornflowerblue' : 'hotpink')
-      ))
-      card.classList.add('card')
-      card.addEventListener('click', this.select)
-      document.getElementsByTagName('svg')[0].appendChild(card)
+      this.cards[categoryIdx].push({
+        x: 200 * categoryIdx + 30,
+        y: 50 * (cardIdx + 1),
+        fill: (categoryIdx === 0 ? 'mediumseagreen' : (categoryIdx === 1 ? 'cornflowerblue' : 'hotpink')),
+        text: text
+      })
+      console.log(this.cards)
     }
   }
 }
