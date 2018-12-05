@@ -13,10 +13,6 @@
           stroke: #333;
           stroke-width: 3;
         }
-        .card-text {
-          text-anchor: middle;
-          font-size: 12px;
-        }
         line {
           stroke: #333;
           stroke-width: 3;
@@ -38,15 +34,12 @@
       <use x="0" fill="aquamarine" href="#category-area" />
       <text x="100" y="20" class="category-title">エピソード・経験</text>
       <use cx="100" x="100" fill="mediumseagreen" href="#add-button" v-on:click="addCard" />
-      <rect x="30" y="50" width="140" height="48" rx="10" ry="10" fill="mediumseagreen" class="card" v-on:click="select" />
-      <text x="100" y="70" class="card-text">＊＊ちゃんとの交際＊＊</text>
-      <text x="100" y="90" class="card-text">＊＊ちゃんとの交際＊＊</text>
+      <Card x="30" y="50" fill="mediumseagreen" text="＊＊ちゃんとの交際＊＊＊ちゃんとの交際＊" />
 
       <use x="200" fill="lightskyblue" href="#category-area" />
       <text x="300" y="20" class="category-title">性格・スキル・能力</text>
       <use cx="300" x="300" fill="cornflowerblue" href="#add-button" v-on:click="addCard" />
-      <rect x="230" y="50" width="140" height="48" rx="10" ry="10" fill="cornflowerblue" class="card" v-on:click="select" />
-      <text x="300" y="80" class="card-text" >ショタコン</text>
+      <Card x="230" y="50" fill="cornflowerblue" text="ショタコン" />
       <rect x="230" y="100" width="140" height="48" rx="10" ry="10" fill="cornflowerblue" class="card" v-on:click="select" />
       <text x="300" y="130" class="card-text">積極的</text>
 
@@ -60,6 +53,7 @@
 </template>
 
 <script>
+import Card from './Card'
 export default {
   name: 'Main',
   data () {
@@ -71,6 +65,9 @@ export default {
       edges: [],
       timerID: null
     }
+  },
+  components: {
+    Card
   },
   methods: {
     select: function (e) {
@@ -93,13 +90,11 @@ export default {
         target.classList.add('selected')
         this.selectCount += 1
         this.selectItems.push(newItem)
-        console.log(this)
         if (this.selectCount === 2) {
           this.writeLine()
           this.runTimer()
         }
       }
-      console.log(this.selectCount)
     },
     writeLine: function () {
       let line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
@@ -139,8 +134,8 @@ export default {
     },
     addCard: function (e) {
       const target = e.currentTarget
-      const text = window.prompt('22文字以内で入力してください', '')
-      if (text.length === 0 || text.length > 22) {
+      const text = window.prompt('20文字以内で入力してください', '')
+      if (text.length === 0 || text.length > 20) {
         this.addCard(e)
         return
       }
@@ -148,7 +143,7 @@ export default {
       this.cardCount[categoryIdx]++
       const cardIdx = this.cardCount[categoryIdx]
 
-      if (cardIdx === this.cardLimit) {
+      if (cardIdx >= this.cardLimit) {
         target.parentNode.removeChild(target)
       }
 
