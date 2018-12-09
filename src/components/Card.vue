@@ -1,17 +1,18 @@
 <template>
-  <svg class="card">
+  <svg class="card" :id="'card'+this.id">
     <svg:style type="text/css">
       .card-text {
         text-anchor: middle;
         font-size: 12px;
       }
-      text.delete-button {
+      text.remove-button {
         font-weight: bold;
         cursor: pointer;
+        fill: white;
       }
     </svg:style>
     <rect :x="this.x" :y="this.y" width="140" height="48" rx="10" ry="15" :fill="this.fill" class="card-background" v-on:click="click" />
-    <text :x="Number(this.x) + 5" :y="Number(this.y) + 12" class="delete-button" v-if="isSelected">×</text>
+    <text :x="Number(this.x) + 5" :y="Number(this.y) + 12" class="remove-button" v-on:click="removeCard">×</text>
     <text :x="this.textX" :y="this.textY" class="card-text">{{ this.text.substr(0, 10) }}</text>
     <text v-if="this.isLongText" :x="this.textX" :y="Number(this.textY) + 20" class="card-text"> {{ this.text.substr(10, 10) }}</text>
   </svg>
@@ -19,12 +20,7 @@
 <script>
 export default {
   name: 'Card',
-  data () {
-    return {
-      isSelected: false
-    }
-  },
-  props: ['x', 'y', 'fill', 'text'],
+  props: ['id', 'x', 'y', 'fill', 'text'],
   computed: {
     isLongText () {
       return this.text.length > 10
@@ -34,13 +30,16 @@ export default {
     },
     textY () {
       return Number(this.y) + (this.isLongText ? 20 : 30)
+    },
+    isSelected () {
+      const rect = document.getElementsByTagName('rect')[0]
+      return rect.classList.contains('selected')
+    },
+    category () {
+      return Math.floor(this.id / 7)
     }
   },
   methods: {
-    created: function () {
-      console.log(this.x)
-      console.log(this.y)
-    },
     click: function (e) {
       const target = e.currentTarget
       const newItem = {
@@ -52,13 +51,15 @@ export default {
       }
       if (target.classList.contains('selected')) {
         target.classList.remove('selected')
-        this.isSelected = false
         this.$parent.unselect(target, newItem)
       } else {
         target.classList.add('selected')
-        this.isSelected = true
         this.$parent.select(target, newItem)
       }
+    },
+    removeCard: function (e) {
+      const target = e.target.parentElement
+      this.$parent.removeCard(target, this.category)
     }
   }
 }
