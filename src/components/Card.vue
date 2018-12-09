@@ -1,5 +1,5 @@
 <template>
-  <svg class="card" :id="'card'+this.id">
+  <svg class="card">
     <svg:style type="text/css">
       .card-text {
         text-anchor: middle;
@@ -20,7 +20,7 @@
 <script>
 export default {
   name: 'Card',
-  props: ['id', 'x', 'y', 'fill', 'text'],
+  props: ['x', 'y', 'fill', 'text'],
   computed: {
     isLongText () {
       return this.text.length > 10
@@ -36,7 +36,12 @@ export default {
       return rect.classList.contains('selected')
     },
     category () {
-      return Math.floor(this.id / 7)
+      if (this.fill === 'mediumseagreen') {
+        return 0
+      } else if (this.fill === 'cornflowerblue') {
+        return 1
+      }
+      return 2
     }
   },
   methods: {
@@ -58,8 +63,12 @@ export default {
       }
     },
     removeCard: function (e) {
-      const target = e.target.parentElement
-      this.$parent.removeCard(target, this.category)
+      // const target = e.target.parentElement.parentElement
+      // this.$parent.removeCard(target, this.category)
+      this.$parent.removeCard({
+        fill: this.fill,
+        text: this.text
+      }, this.category)
     }
   }
 }
