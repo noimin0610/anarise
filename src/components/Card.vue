@@ -63,12 +63,7 @@ export default {
       }
     },
     removeCard: function (e) {
-      // const target = e.target.parentElement.parentElement
-      // this.$parent.removeCard(target, this.category)
-      this.$parent.removeCard({
-        fill: this.fill,
-        text: this.text
-      }, this.category)
+      this.$parent.removeCard(this.index, this.category)
     }
   }
 }
