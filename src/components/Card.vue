@@ -11,8 +11,8 @@
         fill: white;
       }
     </svg:style>
-    <rect :x="this.x" :y="this.y" width="140" height="48" rx="10" ry="15" :fill="this.fill" class="card-background" v-on:click="click" />
-    <text :x="Number(this.x) + 5" :y="Number(this.y) + 12" class="remove-button" v-on:click="removeCard">×</text>
+    <rect :x="this.x" :y="this.y" width="140" height="48" rx="10" ry="15" :fill="this.fill" class="card-background" :index="this.index" v-on:click="click" />
+    <text :x="Number(this.x) + 5" :y="Number(this.y) + 12" class="remove-button" v-on:click="removeCard" v-if="!this.isSelected">×</text>
     <text :x="this.textX" :y="this.textY" class="card-text">{{ this.text.substr(0, 10) }}</text>
     <text v-if="this.isLongText" :x="this.textX" :y="Number(this.textY) + 20" class="card-text"> {{ this.text.substr(10, 10) }}</text>
   </svg>
@@ -20,6 +20,11 @@
 <script>
 export default {
   name: 'Card',
+  data () {
+    return {
+      isSelected: false
+    }
+  },
   props: ['index', 'x', 'y', 'fill', 'text'],
   computed: {
     isLongText () {
@@ -30,10 +35,6 @@ export default {
     },
     textY () {
       return Number(this.y) + (this.isLongText ? 20 : 30)
-    },
-    isSelected () {
-      const rect = document.getElementsByTagName('rect')[0]
-      return rect.classList.contains('selected')
     },
     category () {
       if (this.fill === 'mediumseagreen') {
@@ -54,11 +55,13 @@ export default {
         width: target.width.baseVal.value,
         height: target.height.baseVal.value
       }
-      if (target.classList.contains('selected')) {
+      if (this.isSelected) {
         target.classList.remove('selected')
+        this.isSelected = false
         this.$parent.unselect(target, newItem)
       } else {
         target.classList.add('selected')
+        this.isSelected = true
         this.$parent.select(target, newItem)
       }
     },

@@ -11,11 +11,11 @@
         }
         .selected {
           stroke: #333;
-          stroke-width: 3;
+          stroke-width: 1;
         }
         line {
           stroke: #333;
-          stroke-width: 3;
+          stroke-width: 5;
         }
         text.add-button {
           fill: white;
