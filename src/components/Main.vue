@@ -39,21 +39,21 @@
       <text x="100" y="20" class="category-title">エピソード・経験</text>
       <use cx="100" x="100" fill="mediumseagreen" href="#add-button" v-on:click="addCard" />
       <svg v-for="(card, index) in cards[0]" :key="card.id" class="card-category0">
-        <Card x="30" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="card.index" />
+        <Card x="30" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="index" />
       </svg>
 
       <use x="200" fill="lightskyblue" href="#category-area" />
       <text x="300" y="20" class="category-title">性格・スキル・能力</text>
       <use cx="300" x="300" fill="cornflowerblue" href="#add-button" v-on:click="addCard" />
       <svg v-for="(card, index) in cards[1]" :key="card.id" class="card-category1">
-        <Card x="230" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="card.index" />
+        <Card x="230" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="index" />
       </svg>
 
       <use x="400" fill="pink" href="#category-area" />
       <text x="500" y="20" class="category-title">志望先の特徴</text>
       <use cx="500" x="500" fill="hotpink" href="#add-button" v-on:click="addCard" />
       <svg v-for="(card, index)  in cards[2]" :key="card.id" class="card-category2">
-        <Card x="430" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="card.index" />
+        <Card x="430" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="index" />
       </svg>
     </svg>
   </div>
@@ -68,22 +68,27 @@ export default {
       cards: [
         [
           {
+            index: 0,
             fill: 'mediumseagreen',
             text: '競プロで青コーダーになった'
           }
         ], [
           {
+            index: 0,
             fill: 'cornflowerblue',
             text: '自我'
           }, {
+            index: 1,
             fill: 'cornflowerblue',
             text: '実装力'
           }, {
+            index: 2,
             fill: 'cornflowerblue',
             text: '内省'
           }
         ], [
           {
+            index: 0,
             fill: 'hotpink',
             text: '尖った技術力'
           }
@@ -172,14 +177,15 @@ export default {
         target.parentNode.removeChild(target)
       }
       this.cards[categoryIdx].push({
+        index: this.cards[categoryIdx].length,
         fill: (categoryIdx === 0 ? 'mediumseagreen' : (categoryIdx === 1 ? 'cornflowerblue' : 'hotpink')),
         text: text
       })
     },
     removeCard: function (index, category) {
-      this.cards[category] = this.cards[category].filter(card => card.index !== index)
+      this.cards[category].splice(index, 1)
       for (let i in this.cards[category]) {
-        console.log(this.cards[i].text)
+        this.cards[category][i].index = i
       }
     }
   }
