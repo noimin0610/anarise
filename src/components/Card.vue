@@ -20,7 +20,7 @@
 <script>
 export default {
   name: 'Card',
-  props: ['x', 'y', 'fill', 'text'],
+  props: ['index', 'x', 'y', 'fill', 'text'],
   computed: {
     isLongText () {
       return this.text.length > 10

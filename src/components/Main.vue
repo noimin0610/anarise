@@ -68,22 +68,27 @@ export default {
       cards: [
         [
           {
+            index: 0,
             fill: 'mediumseagreen',
             text: '競プロで青コーダーになった'
           }
         ], [
           {
+            index: 0,
             fill: 'cornflowerblue',
             text: '自我'
           }, {
+            index: 1,
             fill: 'cornflowerblue',
             text: '実装力'
           }, {
+            index: 2,
             fill: 'cornflowerblue',
             text: '内省'
           }
         ], [
           {
+            index: 0,
             fill: 'hotpink',
             text: '尖った技術力'
           }
@@ -163,14 +168,16 @@ export default {
         target.parentNode.removeChild(target)
       }
       this.cards[categoryIdx].push({
+        index: this.cards[categoryIdx].length,
         fill: (categoryIdx === 0 ? 'mediumseagreen' : (categoryIdx === 1 ? 'cornflowerblue' : 'hotpink')),
         text: text
       })
     },
     removeCard: function (target, category) {
       console.log(target)
-      this.cards[category].filter(card => card !== target)
-      console.log(this.cards[category])
+      this.cards[category].filter(card => card.te !== target)
+      console.log(this.cards[category][0])
+      console.log(target)
     }
   }
 }
