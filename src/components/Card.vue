@@ -48,21 +48,18 @@ export default {
   methods: {
     click: function (e) {
       const target = e.currentTarget
-      const newItem = {
-        element: target,
+      const clickedItem = {
+        target: target,
+        object: this,
         x: target.x.baseVal.value,
         y: target.y.baseVal.value,
         width: target.width.baseVal.value,
         height: target.height.baseVal.value
       }
       if (this.isSelected) {
-        target.classList.remove('selected')
-        this.isSelected = false
-        this.$parent.unselect(target, newItem)
+        this.$parent.unselect(clickedItem)
       } else {
-        target.classList.add('selected')
-        this.isSelected = true
-        this.$parent.select(target, newItem)
+        this.$parent.select(clickedItem)
       }
     },
     removeCard: function (e) {

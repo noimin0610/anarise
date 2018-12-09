@@ -105,15 +105,19 @@ export default {
     Card
   },
   methods: {
-    unselect: function (target, newItem) {
+    unselect: function (clickedItem) {
+      clickedItem.target.classList.remove('selected')
+      clickedItem.object.isSelected = false
       this.selectCount -= 1
       this.selectItems.splice(
-        this.selectItems.indexOf(newItem), 1
+        this.selectItems.indexOf(clickedItem), 1
       )
     },
-    select: function (target, newItem) {
+    select: function (clickedItem) {
+      clickedItem.target.classList.add('selected')
+      clickedItem.object.isSelected = true
       this.selectCount += 1
-      this.selectItems.push(newItem)
+      this.selectItems.push(clickedItem)
       if (this.selectCount === 2) {
         this.writeLine()
         this.runTimer()
@@ -142,8 +146,10 @@ export default {
     clearSelect: function () {
       clearTimeout(this.timerID)
       this.selectCount = 0
-      this.selectItems[0].element.classList.remove('selected')
-      this.selectItems[1].element.classList.remove('selected')
+      this.selectItems[0].target.classList.remove('selected')
+      this.selectItems[1].target.classList.remove('selected')
+      this.selectItems[0].object.isSelected = false
+      this.selectItems[1].object.isSelected = false
       this.selectItems = []
     },
     runTimer: function () {
