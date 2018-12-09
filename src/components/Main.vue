@@ -70,21 +70,21 @@ export default {
           {
             index: 0,
             fill: 'mediumseagreen',
-            text: '競プロで青コーダーになった'
+            text: 'X社インターンでYの改良をした'
           }
         ], [
           {
             index: 0,
             fill: 'cornflowerblue',
-            text: '自我'
+            text: 'RDB設計'
           }, {
             index: 1,
             fill: 'cornflowerblue',
-            text: '実装力'
+            text: '複雑な実装が得意'
           }, {
             index: 2,
             fill: 'cornflowerblue',
-            text: '内省'
+            text: '内省的'
           }
         ], [
           {
