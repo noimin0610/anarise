@@ -150,26 +150,37 @@ export default {
       this.edges = newEdges
       target.parentNode.removeChild(target)
     },
-    addCard: function (e) {
+    addCard: function (e, isSame) {
       const target = e.currentTarget
-      const text = window.prompt('20文字以内で入力してください', '')
+      let text
+      if (isSame) {
+        text = window.prompt('20文字以内で入力してください．同じカテゴリに同じ名前のカードは作れません．', '')
+      } else {
+        text = window.prompt('20文字以内で入力してください', '')
+      }
       if (text.length === 0 || text.length > 20) {
-        this.addCard(e)
+        this.addCard(e, false)
         return
       }
       const categoryIdx = Math.floor(target.x.baseVal.value / 200)
+      if (this.cards[categoryIdx].some(card => card.text === text)) {
+        this.addCard(e, true)
+        return
+      }
       const cardIdx = this.cards[categoryIdx].length
       if (cardIdx >= this.cardLimit) {
         target.parentNode.removeChild(target)
       }
       this.cards[categoryIdx].push({
-        index: this.cards[categoryIdx].length,
         fill: (categoryIdx === 0 ? 'mediumseagreen' : (categoryIdx === 1 ? 'cornflowerblue' : 'hotpink')),
         text: text
       })
     },
     removeCard: function (index, category) {
-      this.cards[category].splice(index, 1)
+      this.cards[category] = this.cards[category].filter(card => card.index !== index)
+      for (let i in this.cards[category]) {
+        console.log(this.cards[i].text)
+      }
     }
   }
 }
