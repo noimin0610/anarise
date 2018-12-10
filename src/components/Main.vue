@@ -121,9 +121,7 @@ export default {
       if (this.selectCount === 2) {
         this.writeLine()
         this.runTimer()
-        return true // 線書いた
       }
-      return []
     },
     writeLine: function () {
       let line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
