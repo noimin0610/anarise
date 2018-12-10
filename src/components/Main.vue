@@ -55,6 +55,10 @@
       <svg v-for="(card, index)  in cards[2]" :key="card.id" class="card-category2">
         <Card x="430" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="index" />
       </svg>
+
+      <svg v-for="(line, index) in lines" :key="line.key">
+        <svg:line :x1="line.x1" :y1="line.y1" :x2="line.x2" :y2="line.y2" :index="index" v-on:click="removeLine" />
+      </svg>
     </svg>
   </div>
 </template>
@@ -97,7 +101,8 @@ export default {
       cardLimit: 7,
       selectCount: 0,
       selectItems: [],
-      edges: [],
+      lines: [],
+      lineKey: 0,
       timerID: null
     }
   },
@@ -121,12 +126,9 @@ export default {
       if (this.selectCount === 2) {
         this.writeLine()
         this.runTimer()
-        return true // 線書いた
       }
-      return []
     },
     writeLine: function () {
-      let line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
       if (Math.abs(this.selectItems[0].x - this.selectItems[1].x) !== 200) {
         return
       }
@@ -135,13 +137,20 @@ export default {
         this.selectItems[0] = this.selectItems[1]
         this.selectItems[1] = t
       }
-      line.setAttribute('x1', this.selectItems[0].x + this.selectItems[0].width)
-      line.setAttribute('y1', (this.selectItems[0].y + this.selectItems[0].height / 2))
-      line.setAttribute('x2', this.selectItems[1].x)
-      line.setAttribute('y2', (this.selectItems[1].y + this.selectItems[1].height / 2))
-      line.addEventListener('click', this.removeLine)
-      document.getElementsByTagName('svg')[0].appendChild(line)
-      this.edges.push(line)
+      let line = {
+        x1: this.selectItems[0].x + this.selectItems[0].width,
+        y1: this.selectItems[0].y + this.selectItems[0].height / 2,
+        x2: this.selectItems[1].x,
+        y2: this.selectItems[1].y + this.selectItems[1].height / 2,
+        key: this.lineKey
+      }
+      for (let i in this.lines) {
+        if (line.x1 === this.lines[i].x1 && line.x2 === this.lines[i].x2 && line.y1 === this.lines[i].y1 && line.y2 === this.lines[i].y2) {
+          return
+        }
+      }
+      this.lineKey += 1
+      this.lines.push(line)
     },
     clearSelect: function () {
       clearTimeout(this.timerID)
@@ -156,10 +165,17 @@ export default {
       this.timerID = setTimeout(this.clearSelect, 300)
     },
     removeLine: function (e) {
+      for (let i in this.lines) {
+        console.log(this.lines[i].index)
+      }
       const target = e.currentTarget
-      const newEdges = this.edges.filter(e => e !== target)
-      this.edges = newEdges
-      target.parentNode.removeChild(target)
+      this.lines.splice(target.attributes.index.nodeValue, 1)
+      for (let i in this.lines) {
+        this.lines[i].index = i
+      }
+      for (let i in this.lines) {
+        console.log(this.lines[i].index)
+      }
     },
     addCard: function (e, isSame) {
       const target = e.currentTarget
@@ -192,6 +208,17 @@ export default {
       this.cards[category].splice(index, 1)
       for (let i in this.cards[category]) {
         this.cards[category][i].index = i
+      }
+      this.lines = this.lines.filter(e => !(e.x1 === 200 * category + 170 && e.y1 === 50 * (index + 1) + 24) && !(e.x2 === 200 * category + 30 && e.y2 === 50 * (index + 1) + 24))
+
+      for(let i in this.lines) {
+        let e = this.lines[i]
+        if (e.x1 === 200 * category + 170 && e.y1 > 50 * (index + 1) + 24) {
+          this.lines[i].y1 -= 50
+        }
+        if (e.x2 === 200 * category + 30 && e.y2 > 50 * (index + 1) + 24) {
+          this.lines[i].y2 -= 50
+        }
       }
     }
   }
