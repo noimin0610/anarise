@@ -209,6 +209,7 @@ export default {
       for (let i in this.cards[category]) {
         this.cards[category][i].index = i
       }
+      this.lines = this.lines.filter(e => !(e.x1 === 200 * category + 170 && e.y1 === 50 * (index + 1) + 24) && !(e.x2 === 200 * category + 30 && e.y2 === 50 * (index + 1) + 24))
     }
   }
 }
