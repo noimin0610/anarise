@@ -144,6 +144,11 @@ export default {
         y2: this.selectItems[1].y + this.selectItems[1].height / 2,
         key: this.lineKey
       }
+      for (let i in this.lines) {
+        if (line.x1 === this.lines[i].x1 && line.x2 === this.lines[i].x2 && line.y1 === this.lines[i].y1 && line.y2 === this.lines[i].y2) {
+          return
+        }
+      }
       this.lineKey += 1
       this.lines.push(line)
     },
