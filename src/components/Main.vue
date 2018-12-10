@@ -56,8 +56,8 @@
         <Card x="430" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="index" />
       </svg>
 
-      <svg v-for="edge in edges" :key="edge.key">
-        <svg:line :x1="edge.x1" :y1="edge.y1" :x2="edge.x2" :y2="edge.y2" v-on:click="removeLine" />
+      <svg v-for="(line, index) in lines" :key="line.key">
+        <svg:line :x1="line.x1" :y1="line.y1" :x2="line.x2" :y2="line.y2" :index="index" v-on:click="removeLine" />
       </svg>
     </svg>
   </div>
@@ -101,7 +101,8 @@ export default {
       cardLimit: 7,
       selectCount: 0,
       selectItems: [],
-      edges: [],
+      lines: [],
+      lineKey: 0,
       timerID: null
     }
   },
@@ -141,12 +142,10 @@ export default {
         y1: this.selectItems[0].y + this.selectItems[0].height / 2,
         x2: this.selectItems[1].x,
         y2: this.selectItems[1].y + this.selectItems[1].height / 2,
-        key: 'line' + this.edges.length
+        key: this.lineKey
       }
-      this.edges.push(line)
-      for (let i in this.edges) {
-        console.log(this.edges[i].x1, this.edges[i].x2, this.edges[i].key)
-      }
+      this.lineKey += 1
+      this.lines.push(line)
     },
     clearSelect: function () {
       clearTimeout(this.timerID)
@@ -161,10 +160,17 @@ export default {
       this.timerID = setTimeout(this.clearSelect, 300)
     },
     removeLine: function (e) {
+      for (let i in this.lines) {
+        console.log(this.lines[i].index)
+      }
       const target = e.currentTarget
-      const newEdges = this.edges.filter(e => e !== target)
-      this.edges = newEdges
-      target.parentNode.removeChild(target)
+      this.lines.splice(target.attributes.index.nodeValue, 1)
+      for (let i in this.lines) {
+        this.lines[i].index = i
+      }
+      for (let i in this.lines) {
+        console.log(this.lines[i].index)
+      }
     },
     addCard: function (e, isSame) {
       const target = e.currentTarget
