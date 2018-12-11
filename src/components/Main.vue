@@ -244,7 +244,7 @@ export default {
         this.addCard(index, category, false)
         return
       }
-      if (this.cards[category].some(card => card.text === text)) {
+      if (this.cards[category].some(card => card.index !== index && card.text === text)) {
         this.addCard(index, category, true)
         return
       }
