@@ -206,15 +206,15 @@ export default {
         this.addCard(e, true)
         return
       }
-      const cardIdx = this.cards[categoryIdx].length
-      if (cardIdx >= this.cardLimit) {
-        target.parentNode.removeChild(target)
-      }
       this.cards[categoryIdx].push({
         index: this.cards[categoryIdx].length,
         fill: (categoryIdx === 0 ? 'mediumseagreen' : (categoryIdx === 1 ? 'cornflowerblue' : 'hotpink')),
         text: text
       })
+      const cardIdx = this.cards[categoryIdx].length
+      if (cardIdx >= this.cardLimit) {
+        target.parentNode.removeChild(target)
+      }
     },
     removeCard: function (index, category) {
       this.cards[category].splice(index, 1)
