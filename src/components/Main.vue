@@ -246,6 +246,7 @@ export default {
       } else {
         text = window.prompt('1文字以上20文字以内で入力してください', this.cards[category][index].text)
       }
+      if (text === null) return
       if (text.length === 0 || text.length > 20) {
         this.editCard(index, category, false)
         return
