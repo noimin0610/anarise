@@ -246,11 +246,11 @@ export default {
         text = window.prompt('1文字以上20文字以内で入力してください', this.cards[category][index].text)
       }
       if (text.length === 0 || text.length > 20) {
-        this.addCard(index, category, false)
+        this.editCard(index, category, false)
         return
       }
       if (this.cards[category].some(card => card.index !== index && card.text === text)) {
-        this.addCard(index, category, true)
+        this.editCard(index, category, true)
         return
       }
       this.cards[category][index].text = text
