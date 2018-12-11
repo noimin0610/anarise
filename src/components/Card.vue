@@ -75,7 +75,7 @@ export default {
       this.$parent.removeCard(this.index, this.category)
     },
     editCard: function (e) {
-      this.$parent.editCard(this.index, this.category)
+      this.$parent.editCard(this.index, this.category, false)
     }
   }
 }

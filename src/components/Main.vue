@@ -220,6 +220,23 @@ export default {
           this.lines[i].y2 -= 50
         }
       }
+    },
+    editCard: function (index, category, isSame) {
+      let text
+      if (isSame) {
+        text = window.prompt('20文字以内で入力してください．同じカテゴリに同じ名前のカードは作れません．', this.cards[category][index].text)
+      } else {
+        text = window.prompt('20文字以内で入力してください', this.cards[category][index].text)
+      }
+      if (text.length === 0 || text.length > 20) {
+        this.addCard(index, category, false)
+        return
+      }
+      if (this.cards[category].some(card => card.text === text)) {
+        this.addCard(e, true)
+        return
+      }
+      this.cards[category][index].text = text
     }
   }
 }
