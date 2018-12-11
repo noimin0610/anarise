@@ -1,9 +1,10 @@
 <template>
   <svg class="card">
     <svg:style type="text/css">
-      .card-text {
+      text.card-text {
         text-anchor: middle;
         font-size: 12px;
+        pointer-events: none;
       }
       text.remove-button {
         font-weight: bold;

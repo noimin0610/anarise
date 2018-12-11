@@ -211,7 +211,7 @@ export default {
       }
       this.lines = this.lines.filter(e => !(e.x1 === 200 * category + 170 && e.y1 === 50 * (index + 1) + 24) && !(e.x2 === 200 * category + 30 && e.y2 === 50 * (index + 1) + 24))
 
-      for(let i in this.lines) {
+      for (let i in this.lines) {
         let e = this.lines[i]
         if (e.x1 === 200 * category + 170 && e.y1 > 50 * (index + 1) + 24) {
           this.lines[i].y1 -= 50
