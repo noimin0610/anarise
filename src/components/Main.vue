@@ -130,9 +130,9 @@ export default {
   computed: {
     isFull () {
       return [
-        Number(this.cards[0].slice(-1)[0].index) + 1 >= this.cardLimit,
-        Number(this.cards[1].slice(-1)[0].index) + 1 >= this.cardLimit,
-        Number(this.cards[2].slice(-1)[0].index) + 1 >= this.cardLimit
+        this.cards[0].length && Number(this.cards[0].slice(-1)[0].index) + 1 >= this.cardLimit,
+        this.cards[1].length && Number(this.cards[1].slice(-1)[0].index) + 1 >= this.cardLimit,
+        this.cards[2].length && Number(this.cards[2].slice(-1)[0].index) + 1 >= this.cardLimit
       ]
     }
   },
@@ -206,6 +206,7 @@ export default {
       } else {
         text = window.prompt('1文字以上20文字以内で入力してください', '')
       }
+      if (text === null) return
       if (text.length === 0 || text.length > 20) {
         this.addCard(e, false)
         return
