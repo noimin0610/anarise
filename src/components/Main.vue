@@ -181,9 +181,9 @@ export default {
       const target = e.currentTarget
       let text
       if (isSame) {
-        text = window.prompt('20文字以内で入力してください．同じカテゴリに同じ名前のカードは作れません．', '')
+        text = window.prompt('1文字以上20文字以内で入力してください．同じカテゴリに同じ名前のカードは作れません．', '')
       } else {
-        text = window.prompt('20文字以内で入力してください', '')
+        text = window.prompt('1文字以上20文字以内で入力してください', '')
       }
       if (text.length === 0 || text.length > 20) {
         this.addCard(e, false)
@@ -224,9 +224,9 @@ export default {
     editCard: function (index, category, isSame) {
       let text
       if (isSame) {
-        text = window.prompt('20文字以内で入力してください．同じカテゴリに同じ名前のカードは作れません．', this.cards[category][index].text)
+        text = window.prompt('1文字以上20文字以内で入力してください．同じカテゴリに同じ名前のカードは作れません．', this.cards[category][index].text)
       } else {
-        text = window.prompt('20文字以内で入力してください', this.cards[category][index].text)
+        text = window.prompt('1文字以上20文字以内で入力してください', this.cards[category][index].text)
       }
       if (text.length === 0 || text.length > 20) {
         this.addCard(index, category, false)
