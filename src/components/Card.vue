@@ -6,14 +6,22 @@
         font-size: 12px;
         pointer-events: none;
       }
-      text.remove-button {
-        font-weight: bold;
+      text.button {
+        text-anchor: middle;
         cursor: pointer;
         fill: white;
       }
+      text.remove-button {
+        font-size: 16px;
+        font-weight: bold;
+      }
+      text.edit-button {
+        font-size: 10px;
+      }
     </svg:style>
     <rect :x="this.x" :y="this.y" width="140" height="48" rx="10" ry="15" :fill="this.fill" class="card-background" :index="this.index" v-on:click="click" />
-    <text :x="Number(this.x) + 5" :y="Number(this.y) + 12" class="remove-button" v-on:click="removeCard" v-if="!this.isSelected">×</text>
+    <text :x="Number(this.x) + 10" :y="Number(this.y) + 12" class="button remove-button" v-on:click="removeCard" v-if="!this.isSelected">×</text>
+    <text :x="Number(this.x) + 120" :y="Number(this.y) + 10" class="button edit-button" v-on:click="editCard" v-if="!this.isSelected">edit</text>
     <text :x="this.textX" :y="this.textY" class="card-text">{{ this.text.substr(0, 10) }}</text>
     <text v-if="this.isLongText" :x="this.textX" :y="Number(this.textY) + 20" class="card-text"> {{ this.text.substr(10, 10) }}</text>
   </svg>
@@ -65,6 +73,9 @@ export default {
     },
     removeCard: function (e) {
       this.$parent.removeCard(this.index, this.category)
+    },
+    editCard: function (e) {
+      this.$parent.editCard(this.index, this.category)
     }
   }
 }
