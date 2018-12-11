@@ -74,35 +74,53 @@ export default {
           {
             index: 0,
             fill: 'mediumseagreen',
-            text: 'X社インターンでYの改良をした'
+            text: 'X社インターンでYの手法を提案'
+          },
+          {
+            index: 1,
+            fill: 'mediumseagreen',
+            text: 'Webアプリ"Z"を友人と開発'
           }
         ], [
           {
             index: 0,
             fill: 'cornflowerblue',
-            text: 'RDB設計'
+            text: '実装のスピード'
           }, {
             index: 1,
             fill: 'cornflowerblue',
-            text: '複雑な実装が得意'
-          }, {
-            index: 2,
-            fill: 'cornflowerblue',
-            text: '内省的'
+            text: 'チーム開発好き'
           }
         ], [
           {
             index: 0,
             fill: 'hotpink',
-            text: '尖った技術力'
+            text: 'チーム単位で仕事'
+          },
+          {
+            index: 1,
+            fill: 'hotpink',
+            text: 'プログラムがたくさんかける'
           }
         ]
       ],
       cardLimit: 7,
       selectCount: 0,
       selectItems: [],
-      lines: [],
-      lineKey: 0,
+      lines: [
+        {
+          x1: 170, y1: 124, x2: 230, y2: 124, key: 0
+        }, {
+          x1: 170, y1: 74, x2: 230, y2: 74, key: 1
+        }, {
+          x1: 170, y1: 124, x2: 230, y2: 74, key: 2
+        }, {
+          x1: 370, y1: 124, x2: 430, y2: 74, key: 3
+        }, {
+          x1: 370, y1: 74, x2: 430, y2: 124, key: 4
+        }
+      ],
+      lineKey: 5,
       timerID: null
     }
   },
@@ -165,16 +183,10 @@ export default {
       this.timerID = setTimeout(this.clearSelect, 300)
     },
     removeLine: function (e) {
-      for (let i in this.lines) {
-        console.log(this.lines[i].index)
-      }
       const target = e.currentTarget
       this.lines.splice(target.attributes.index.nodeValue, 1)
       for (let i in this.lines) {
         this.lines[i].index = i
-      }
-      for (let i in this.lines) {
-        console.log(this.lines[i].index)
       }
     },
     addCard: function (e, isSame) {
@@ -233,7 +245,7 @@ export default {
         return
       }
       if (this.cards[category].some(card => card.text === text)) {
-        this.addCard(e, true)
+        this.addCard(index, category, true)
         return
       }
       this.cards[category][index].text = text
