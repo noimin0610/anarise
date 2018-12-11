@@ -37,21 +37,21 @@
 
       <use x="0" fill="aquamarine" href="#category-area" />
       <text x="100" y="20" class="category-title">エピソード・経験</text>
-      <use cx="100" x="100" fill="mediumseagreen" href="#add-button" v-on:click="addCard" />
+      <use cx="100" x="100" fill="mediumseagreen" href="#add-button" v-on:click="addCard" v-if="!isFull[0]" />
       <svg v-for="(card, index) in cards[0]" :key="card.id" class="card-category0">
         <Card x="30" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="index" />
       </svg>
 
       <use x="200" fill="lightskyblue" href="#category-area" />
       <text x="300" y="20" class="category-title">性格・スキル・能力</text>
-      <use cx="300" x="300" fill="cornflowerblue" href="#add-button" v-on:click="addCard" />
+      <use cx="300" x="300" fill="cornflowerblue" href="#add-button" v-on:click="addCard" v-if="!isFull[1]" />
       <svg v-for="(card, index) in cards[1]" :key="card.id" class="card-category1">
         <Card x="230" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="index" />
       </svg>
 
       <use x="400" fill="pink" href="#category-area" />
       <text x="500" y="20" class="category-title">志望先の特徴</text>
-      <use cx="500" x="500" fill="hotpink" href="#add-button" v-on:click="addCard" />
+      <use cx="500" x="500" fill="hotpink" href="#add-button" v-on:click="addCard" v-if="!isFull[2]" />
       <svg v-for="(card, index)  in cards[2]" :key="card.id" class="card-category2">
         <Card x="430" :y="50 * (index + 1)" :fill="card.fill" :text="card.text" :index="index" />
       </svg>
@@ -126,6 +126,15 @@ export default {
   },
   components: {
     Card
+  },
+  computed: {
+    isFull () {
+      return [
+        Number(this.cards[0].slice(-1)[0].index) + 1 >= this.cardLimit,
+        Number(this.cards[1].slice(-1)[0].index) + 1 >= this.cardLimit,
+        Number(this.cards[2].slice(-1)[0].index) + 1 >= this.cardLimit
+      ]
+    }
   },
   methods: {
     unselect: function (clickedItem) {
@@ -211,10 +220,6 @@ export default {
         fill: (categoryIdx === 0 ? 'mediumseagreen' : (categoryIdx === 1 ? 'cornflowerblue' : 'hotpink')),
         text: text
       })
-      const cardIdx = this.cards[categoryIdx].length
-      if (cardIdx >= this.cardLimit) {
-        target.parentNode.removeChild(target)
-      }
     },
     removeCard: function (index, category) {
       this.cards[category].splice(index, 1)
